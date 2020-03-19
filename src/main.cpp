@@ -17,7 +17,10 @@
 
 int count = 0;
 
-uint16_t adc_samples[2] = {0,0};
+uint16_t adc_samples[2] = {20,10};
+
+uint16_t adc0;
+uint16_t adc1;
 
 
 
@@ -102,12 +105,13 @@ int main(void)
 
 //----------------------------------------------------------------
 
-	//Enable DMA RCC
-	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN;
 
 
 	//Enable the ADC RCC
 	RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;
+	//Enable DMA RCC
+	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN;
+
 	//change ADC prescaler since it should not exceed 30MHz
 	//(84MHz/4 = 21MHz)
 	ADC->CCR |= ADC_CCR_ADCPRE_0;
@@ -141,21 +145,25 @@ int main(void)
 
 	//---------DMA SETTINGS--------------
 	//Set DMA peripheral Address
-	DMA1_Stream1 -> PAR = (uint32_t)(&(ADC1->DR));
+	DMA1_Stream0-> PAR = (uint32_t)(&(ADC1->DR));
 	//set the DMA memory Address
-	DMA1_Stream1 -> M0AR = (uint32_t)adc_samples;
+	DMA1_Stream0 -> M0AR = (uint32_t)adc_samples;
 	//Tell DMA number of data to transfer
-	DMA1_Stream1 -> NDTR = 2;
+	DMA1_Stream0 -> NDTR = 2;
 	//set the DMA into circular mode
-	DMA1_Stream1 -> CR |= DMA_SxCR_CIRC;
+	DMA1_Stream0 -> CR |= DMA_SxCR_CIRC;
+
+
 	//set DMA to memory increment mode
-	DMA1_Stream1 -> CR |= DMA_SxCR_MINC;
+	DMA1_Stream0 -> CR |= DMA_SxCR_MINC;
 	//set size of data the peripheral is outputting
-	DMA1_Stream1 -> CR |= DMA_SxCR_PSIZE_0; //16-bit
+	DMA1_Stream0 -> CR |= DMA_SxCR_PSIZE_0; //16-bit
 	//size of memory to store data
-	DMA1_Stream1 ->CR |= DMA_SxCR_MSIZE_0;
+	DMA1_Stream0 ->CR |= DMA_SxCR_MSIZE_0;
 	//Enable the DMA Stream
-	DMA1_Stream1 -> CR |= DMA_SxCR_EN;
+	DMA1_Stream0 -> CR |= DMA_SxCR_EN;
+
+
 
 	//enable ADC for the first time (wakes up ADC from power down mode) and set to continuous mode.
 	ADC1->CR2 |= ADC_CR2_ADON | ADC_CR2_CONT;
@@ -174,7 +182,8 @@ int main(void)
 
 	while(1){
 
-
+		adc0 = adc_samples[0];
+		adc1 = adc_samples[1];
 
 	}
 }
