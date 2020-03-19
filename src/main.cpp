@@ -17,10 +17,7 @@
 
 int count = 0;
 
-int ch0_value = 0;
-
-
-
+uint16_t adc_samples[2] = {0,0};
 
 
 
@@ -141,6 +138,24 @@ int main(void)
 
 	//Enable the ADC DMA
 	ADC1->CR2 |= ADC_CR2_DMA;
+
+	//---------DMA SETTINGS--------------
+	//Set DMA peripheral Address
+	DMA1_Stream1 -> PAR = (uint32_t)(&(ADC1->DR));
+	//set the DMA memory Address
+	DMA1_Stream1 -> M0AR = (uint32_t)adc_samples;
+	//Tell DMA number of data to transfer
+	DMA1_Stream1 -> NDTR = 2;
+	//set the DMA into circular mode
+	DMA1_Stream1 -> CR |= DMA_SxCR_CIRC;
+	//set DMA to memory increment mode
+	DMA1_Stream1 -> CR |= DMA_SxCR_MINC;
+	//set size of data the peripheral is outputting
+	DMA1_Stream1 -> CR |= DMA_SxCR_PSIZE_0; //16-bit
+	//size of memory to store data
+	DMA1_Stream1 ->CR |= DMA_SxCR_MSIZE_0;
+	//Enable the DMA Stream
+	DMA1_Stream1 -> CR |= DMA_SxCR_EN;
 
 	//enable ADC for the first time (wakes up ADC from power down mode) and set to continuous mode.
 	ADC1->CR2 |= ADC_CR2_ADON | ADC_CR2_CONT;
