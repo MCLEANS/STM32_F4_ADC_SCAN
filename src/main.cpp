@@ -38,15 +38,7 @@ extern "C" void TIM3_IRQHandler(void){
 
 }
 
-extern "C" void ADC_IRQHandler(void){
 
-	if(ADC1->SR & ADC_SR_EOC){
-		ADC1->SR &= ~ADC_SR_EOC;
-		ch0_value = ADC1->DR;
-		ADC1->CR2 |= ADC_CR2_SWSTART; //start the next conversion
-	}
-
-}
 
 int main(void)
 {
@@ -128,14 +120,6 @@ int main(void)
 	//Set GPIO pin to Analog Mode
 	GPIOA->MODER |= GPIO_MODER_MODER0; //GPIO0 for ADC0
 	GPIOA->MODER |= GPIO_MODER_MODER1; //GPIOA1 for ADC1
-
-	//Enable end of conversion Interrupt
-	ADC1->CR1 |= ADC_CR1_EOCIE;
-
-	//Set ADC Interrupt priority
-	NVIC_SetPriority(ADC_IRQn, 0x00);
-	//Enable NVIC interrupt
-	NVIC_EnableIRQ(ADC_IRQn);
 
 	//set the sampling rate
 	ADC1->SMPR2 |= ADC_SMPR2_SMP0; //ADC0 sampling rate
