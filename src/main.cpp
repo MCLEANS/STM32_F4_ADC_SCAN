@@ -139,6 +139,9 @@ int main(void)
 	//Enable the ADC scan mode
 	ADC1->CR1 |= ADC_CR1_SCAN;
 
+	//Enable the ADC DMA
+	ADC1->CR2 |= ADC_CR2_DMA;
+
 	//enable ADC for the first time (wakes up ADC from power down mode) and set to continuous mode.
 	ADC1->CR2 |= ADC_CR2_ADON | ADC_CR2_CONT;
 	//delay tSTAB to enable the ADC power up
