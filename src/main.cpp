@@ -136,6 +136,9 @@ int main(void)
 	ADC1->SQR3 &= ~ADC_SQR3_SQ1;
 	ADC1->SQR3 |= ADC_SQR3_SQ2_0;
 
+	//Enable the ADC scan mode
+	ADC1->CR1 |= ADC_CR1_SCAN;
+
 	//enable ADC for the first time (wakes up ADC from power down mode) and set to continuous mode.
 	ADC1->CR2 |= ADC_CR2_ADON | ADC_CR2_CONT;
 	//delay tSTAB to enable the ADC power up
