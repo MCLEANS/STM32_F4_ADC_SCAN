@@ -121,6 +121,11 @@ int main(void)
 	GPIOA->MODER |= GPIO_MODER_MODER0; //GPIO0 for ADC0
 	GPIOA->MODER |= GPIO_MODER_MODER1; //GPIOA1 for ADC1
 
+	/*
+	 * ADC Interrupt is not required in SCAN mode since the DMA will take over
+	 * the task of putting the values in the ADC Data register into our array
+	 */
+
 	//set the sampling rate
 	ADC1->SMPR2 |= ADC_SMPR2_SMP0; //ADC0 sampling rate
 	ADC1->SMPR2 |= ADC_SMPR2_SMP1; //ADC1 sampling rate
