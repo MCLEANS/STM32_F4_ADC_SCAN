@@ -113,6 +113,10 @@ int main(void)
 
 //----------------------------------------------------------------
 
+	//Enable DMA RCC
+	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN;
+
+
 	//Enable the ADC RCC
 	RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;
 	//change ADC prescaler since it should not exceed 30MHz
@@ -121,7 +125,7 @@ int main(void)
 	//Enable RCC for input GPIO
 	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 
-	//Set pin to Analog Mode
+	//Set GPIO pin to Analog Mode
 	GPIOA->MODER |= GPIO_MODER_MODER0; //GPIO0 for ADC0
 	GPIOA->MODER |= GPIO_MODER_MODER1; //GPIOA1 for ADC1
 
