@@ -110,7 +110,7 @@ int main(void)
 	//Enable the ADC RCC
 	RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;
 	//Enable DMA RCC
-	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN;
+	RCC->AHB1ENR |= RCC_AHB1ENR_DMA2EN;
 
 	//change ADC prescaler since it should not exceed 30MHz
 	//(84MHz/4 = 21MHz)
@@ -141,25 +141,25 @@ int main(void)
 
 	//---------DMA SETTINGS--------------
 	//Set DMA peripheral Address
-	DMA1_Stream1-> PAR = (uint32_t)(&(ADC1->DR));
+	DMA2_Stream0-> PAR = (uint32_t)(&(ADC1->DR));
 	//set the DMA memory Address
-	DMA1_Stream1 -> M0AR = (uint32_t)(adc_samples);
+	DMA2_Stream0 -> M0AR = (uint32_t)(adc_samples);
 	//Tell DMA number of data to transfer
-	DMA1_Stream1 -> NDTR = 2;
+	DMA2_Stream0 -> NDTR = 2;
 	//set the DMA into circular mode
-	DMA1_Stream1 -> CR |= DMA_SxCR_CIRC;
+	DMA2_Stream0 -> CR |= DMA_SxCR_CIRC;
 
-	DMA1_Stream1 -> CR |= DMA_SxCR_CHSEL_0;
+	//DMA1_Stream1 -> CR |= DMA_SxCR_CHSEL_0;
 
 
 	//set DMA to memory increment mode
-	DMA1_Stream1 -> CR |= DMA_SxCR_MINC;
+	DMA2_Stream0 -> CR |= DMA_SxCR_MINC;
 	//set size of data the peripheral is outputting
-	DMA1_Stream1 -> CR |= DMA_SxCR_PSIZE_0; //16-bit
+	DMA2_Stream0 -> CR |= DMA_SxCR_PSIZE_0; //16-bit
 	//size of memory to store data
-	DMA1_Stream1 ->CR |= DMA_SxCR_MSIZE_0;
+	DMA2_Stream0 ->CR |= DMA_SxCR_MSIZE_0;
 	//Enable the DMA Stream
-	DMA1_Stream1 -> CR |= DMA_SxCR_EN;
+	DMA2_Stream0 -> CR |= DMA_SxCR_EN;
 
 
 	//Enable the ADC scan mode
