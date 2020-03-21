@@ -149,8 +149,8 @@ int main(void)
 	//set the DMA into circular mode
 	DMA2_Stream0 -> CR |= DMA_SxCR_CIRC;
 
-	//DMA1_Stream1 -> CR |= DMA_SxCR_CHSEL_0;
-
+	//select DMA channel 0
+	DMA2_Stream0 ->CR &= ~ DMA_SxCR_CHSEL;
 
 	//set DMA to memory increment mode
 	DMA2_Stream0 -> CR |= DMA_SxCR_MINC;
@@ -187,6 +187,7 @@ int main(void)
 
 		adc0 = adc_samples[0];
 		adc1 = adc_samples[1];
+		ADC1->CR2 |= ADC_CR2_SWSTART;
 
 	}
 }
