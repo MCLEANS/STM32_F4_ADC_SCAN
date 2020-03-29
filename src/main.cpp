@@ -167,6 +167,9 @@ int main(void)
 
 	//Enable the ADC DMA
 	ADC1->CR2 |= ADC_CR2_DMA;
+	//Enable DDS bit for continuous DMA conversion
+	ADC1->CR2 |= ADC_CR2_DDS;
+
 
 	//enable ADC for the first time (wakes up ADC from power down mode) and set to continuous mode.
 	ADC1->CR2 |= ADC_CR2_ADON | ADC_CR2_CONT;
@@ -187,7 +190,7 @@ int main(void)
 
 		adc0 = adc_samples[0];
 		adc1 = adc_samples[1];
-		ADC1->CR2 |= ADC_CR2_SWSTART;
+
 
 	}
 }
